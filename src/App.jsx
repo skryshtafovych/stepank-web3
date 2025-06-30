@@ -7,6 +7,7 @@ import GitHub from './GitHub'
 import BackgroundCanvas from './BackgroundCanvas'
 import { blogPosts, categories } from './blogData'
 import { blogService } from './blogService'
+import Security from './Security'
 
 // Import the GitHub URL for debugging
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/skryshtafovych/web3/main/blog.json';
@@ -487,11 +488,14 @@ function App() {
         <Link to="/about">About</Link>
         <span className="nav-separator">|</span>
         <Link to="/github">GitHub</Link>
+        <span className="nav-separator">|</span>
+        <Link to="/security">Security</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/github" element={<GitHub />} />
+        <Route path="/security" element={<Security />} />
       </Routes>
     </Router>
   );
