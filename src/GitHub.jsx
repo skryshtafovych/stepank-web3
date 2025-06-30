@@ -127,7 +127,7 @@ function GitHub() {
   return (
     <div className="github-container">
       <div className="github-header">
-        <h1>GitHub</h1>
+        
         <p>My projects and repositories I find interesting</p>
         <div className="github-profile">
           <img 

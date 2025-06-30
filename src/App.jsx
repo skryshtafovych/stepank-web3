@@ -4,6 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import GitHub from './GitHub'
+import BackgroundCanvas from './BackgroundCanvas'
 import { blogPosts, categories } from './blogData'
 import { blogService } from './blogService'
 
@@ -478,6 +479,7 @@ function PageTitle() {
 function App() {
   return (
     <Router>
+      <BackgroundCanvas />
       <PageTitle />
       <nav style={{ marginBottom: 20 }}>
         <Link to="/">Home</Link>
