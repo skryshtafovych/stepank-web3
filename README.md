@@ -1,22 +1,61 @@
-# Stepank Web3 Scaffold
+# Stepank Web3 Portfolio
 
-This is a scaffolded React + Vite project ready for decentralized hosting on IPFS and ENS.
+This is a dynamic portfolio website for Stepan Kryshtafovych, built with React and Vite. It features a client-side AI background generator, a secure backend service to dynamically rewrite content using the Google Gemini API, and an audio visualizer. The entire application is containerized with Docker for consistent and easy deployment.
+
+## Features
+- **Dynamic Content:** The "About Me" section is rewritten by a language model for each visitor.
+- **AI-Generated Backgrounds:** A unique, fingerprint-based canvas pattern is generated in the background.
+- **Audio Visualization:** An interactive audio visualizer for both file-based and microphone input.
+- **Secure by Design:** API keys are handled by a backend server and are not exposed to the client.
+- **Containerized:** The entire application can be built and run with Docker.
 
 ## Local Development
 
-```bash
-npm install
-npm run dev
-```
+To run the project locally, follow these steps:
 
-## Build for Production
+1.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
 
+2.  **Create Environment File:**
+    Create a `.env` file in the project root and add your Google Gemini API key:
+    ```
+    GEMINI_API_KEY=YOUR_API_KEY
+    ```
+
+3.  **Run the Development Server:**
+    This command starts both the frontend and the backend server.
+    ```bash
+    npm run dev
+    ```
+    The application will be available at `http://localhost:5173`.
+
+## Docker Deployment
+
+The application is fully containerized. To build and run it with Docker:
+
+1.  **Build the Image:**
+    ```bash
+    docker build -t stepank-web3 .
+    ```
+
+2.  **Run the Container:**
+    Pass your Gemini API key as an environment variable.
+    ```bash
+    docker run -p 3001:3001 -e GEMINI_API_KEY="YOUR_API_KEY" stepank-web3
+    ```
+    The application will be available at `http://localhost:3001`.
+
+## Legacy IPFS Deployment
+The project was previously configured for decentralized deployment on IPFS. These instructions are preserved below but may require updates to work with the current application structure.
+
+### Build for Production
 ```bash
 npm run build
 ```
 
-## Deploy to IPFS
-
+### Deploy to IPFS
 ```bash
 npm run deploy:ipfs
 ```

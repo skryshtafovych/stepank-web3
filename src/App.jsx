@@ -7,6 +7,8 @@ import GitHub from './GitHub'
 import BackgroundCanvas from './BackgroundCanvas'
 import { blogPosts, categories } from './blogData'
 import { blogService } from './blogService'
+import Security from './Security'
+import About from './About'
 
 // Import the GitHub URL for debugging
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/skryshtafovych/web3/main/blog.json';
@@ -24,6 +26,8 @@ function CacheInfo() {
     return () => clearInterval(interval);
   }, []);
 
+
+  
   if (!cacheInfo.exists) {
     return <span>❌ No cache</span>;
   }
@@ -228,153 +232,11 @@ function Home() {
   return (
     <div className="blog-container">
       <div className="blog-header">
-        <h2>Web3 Blog</h2>
+        
         <p>Exploring the decentralized future, one post at a time</p>
-        <div style={{ 
-          fontSize: '0.9rem', 
-          color: 'rgba(255, 255, 255, 0.6)', 
-          marginTop: '0.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.5rem'
-        }}>
-          <span>🔄 Live from GitHub</span>
-          <button 
-            onClick={fetchBlogData} 
-            style={{
-              background: 'none',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
-              color: '#60a5fa',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              fontSize: '0.8rem',
-              cursor: 'pointer'
-            }}
-          >
-            Refresh
-          </button>
-          <button 
-            onClick={() => {
-              console.log('Test button clicked!');
-              setExpandedCard(expandedCard === 1 ? null : 1);
-            }}
-            style={{
-              background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-              border: 'none',
-              color: '#1f2937',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              fontSize: '0.8rem',
-              cursor: 'pointer',
-              fontWeight: 'bold'
-            }}
-          >
-            Test Expand (ID: 1)
-          </button>
-        </div>
 
-        {/* Cache Debug Section */}
-        <div style={{ 
-          fontSize: '0.8rem', 
-          color: 'rgba(255, 255, 255, 0.5)', 
-          marginTop: '1rem',
-          padding: '1rem',
-          background: 'rgba(0, 0, 0, 0.2)',
-          borderRadius: '8px',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
-        }}>
-          <h4 style={{ margin: '0 0 0.5rem 0', color: 'rgba(255, 255, 255, 0.7)' }}>Cache Debug Info</h4>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-            <CacheInfo />
-            <button 
-              onClick={() => {
-                blogService.clearCache();
-                console.log('Cache cleared!');
-                // Force re-render
-                setBlogData({ posts: [], categories: [] });
-                setTimeout(() => fetchBlogData(), 100);
-              }}
-              style={{
-                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                border: 'none',
-                color: 'white',
-                padding: '0.25rem 0.5rem',
-                borderRadius: '4px',
-                fontSize: '0.8rem',
-                cursor: 'pointer'
-              }}
-            >
-              Clear Cache
-            </button>
-            <button 
-              onClick={() => {
-                console.log('Cache info:', blogService.getCacheInfo());
-                console.log('localStorage keys:', Object.keys(localStorage));
-                console.log('stepank_blog_cache:', localStorage.getItem('stepank_blog_cache'));
-                console.log('stepank_blog_cache_timestamp:', localStorage.getItem('stepank_blog_cache_timestamp'));
-              }}
-              style={{
-                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                border: 'none',
-                color: 'white',
-                padding: '0.25rem 0.5rem',
-                borderRadius: '4px',
-                fontSize: '0.8rem',
-                cursor: 'pointer'
-              }}
-            >
-              Log Cache to Console
-            </button>
-            <button 
-              onClick={() => {
-                blogService.clearCache();
-                console.log('Cache cleared! Fetching fresh data...');
-                fetchBlogData();
-              }}
-              style={{
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-                border: 'none',
-                color: 'white',
-                padding: '0.25rem 0.5rem',
-                borderRadius: '4px',
-                fontSize: '0.8rem',
-                cursor: 'pointer'
-              }}
-            >
-              Force Fresh Fetch
-            </button>
-            <button 
-              onClick={() => {
-                console.log('=== DEBUG: Testing GitHub fetch directly ===');
-                fetch(GITHUB_RAW_URL)
-                  .then(response => {
-                    console.log('Direct fetch response:', response.status, response.ok);
-                    return response.text();
-                  })
-                  .then(text => {
-                    console.log('Direct fetch text (first 200 chars):', text.substring(0, 200));
-                    const data = JSON.parse(text);
-                    console.log('Direct fetch parsed data:', data);
-                  })
-                  .catch(error => {
-                    console.error('Direct fetch error:', error);
-                  });
-              }}
-              style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                border: 'none',
-                color: 'white',
-                padding: '0.25rem 0.5rem',
-                borderRadius: '4px',
-                fontSize: '0.8rem',
-                cursor: 'pointer'
-              }}
-            >
-              Test Direct Fetch
-            </button>
-          </div>
-        </div>
+         
+      
       </div>
 
       <div className="blog-categories">
@@ -451,13 +313,6 @@ function Home() {
   );
 }
 
-function About() {
-  return (
-    <div>
-      <p>Stepank.com & stepank.eth: Bridging Web2 and Web3.</p>
-    </div>
-  );
-}
 
 function PageTitle() {
   const location = useLocation();
@@ -482,16 +337,16 @@ function App() {
       <BackgroundCanvas />
       <PageTitle />
       <nav style={{ marginBottom: 20 }}>
-        <Link to="/">Home</Link>
-        <span className="nav-separator">|</span>
-        <Link to="/about">About</Link>
-        <span className="nav-separator">|</span>
-        <Link to="/github">GitHub</Link>
+        <Link to="/" className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}>Blog</Link>
+        <Link to="/github" className={`nav-item ${location.pathname === '/github' ? 'active' : ''}`}>GitHub</Link>
+        <Link to="/security" className={`nav-item ${location.pathname === '/security' ? 'active' : ''}`}>Security</Link>
+        <Link to="/about" className={`nav-item ${location.pathname === '/about' ? 'active' : ''}`}>About</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
         <Route path="/github" element={<GitHub />} />
+        <Route path="/security" element={<Security />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );
