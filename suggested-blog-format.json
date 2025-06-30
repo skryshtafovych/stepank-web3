@@ -1,0 +1,542 @@
+{
+  "blog": {
+    "metadata": {
+      "title": "Stepank Web3 Blog",
+      "description": "Exploring the decentralized future, one post at a time",
+      "author": "Stepank",
+      "lastUpdated": "2025-01-15T10:30:00Z",
+      "version": "1.0"
+    },
+    "posts": [
+      {
+        "id": "web3-blog-technical-implementation",
+        "title": "Technical Deep Dive: Building a Web3 Blog with React, GitHub Integration, and localStorage Caching",
+        "author": "Stepank",
+        "date": "2025-01-15",
+        "lastModified": "2025-01-15T16:00:00Z",
+        "tags": ["React", "JavaScript", "Web3", "Tutorial", "GitHub API", "localStorage", "Caching", "CSS", "Vite"],
+        "summary": "A comprehensive technical guide with exact code examples showing how to build a modern Web3 blog with React, GitHub integration, and intelligent caching.",
+        "readTime": "25 min read",
+        "featured": true,
+        "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop",
+        "slug": "web3-blog-technical-implementation",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "This technical deep dive provides the exact code and implementation steps to build a modern Web3 blog from scratch. We'll cover every line of code, every design decision, and every technical challenge we solved. By the end, you'll have a complete understanding of how to build a production-ready blog with React, GitHub integration, and intelligent caching."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🏗️ Project Setup and Architecture"
+          },
+          {
+            "type": "paragraph",
+            "text": "We start with a React + Vite project for optimal development experience:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```bash\nnpm create vite@latest stepank-web3 -- --template react\ncd stepank-web3\nnpm install react-router-dom\nnpm run dev\n```"
+          },
+          {
+            "type": "paragraph",
+            "text": "Our project structure:\n```\nstepank-web3/\n├── src/\n│   ├── App.jsx          # Main app with routing\n│   ├── App.css          # Global styles\n│   ├── blogService.js   # Data fetching and caching\n│   ├── blogData.js      # Fallback data\n│   ├── GitHub.jsx       # GitHub component\n│   └── assets/\n├── public/\n└── package.json\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🎨 Step 1: Modern CSS Design System"
+          },
+          {
+            "type": "paragraph",
+            "text": "We implement a glassy, modern design system inspired by Passkeys Foundation. Here's the core CSS:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```css\n/* Global styles with dark theme */\n:root {\n  --bg-primary: #0a0a0a;\n  --bg-secondary: rgba(255, 255, 255, 0.05);\n  --text-primary: #ffffff;\n  --text-secondary: rgba(255, 255, 255, 0.7);\n  --accent-yellow: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);\n  --accent-blue: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);\n  --glass-bg: rgba(255, 255, 255, 0.1);\n  --glass-border: rgba(255, 255, 255, 0.2);\n}\n\nbody {\n  background: var(--bg-primary);\n  color: var(--text-primary);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n}\n```"
+          },
+          {
+            "type": "paragraph",
+            "text": "Blog card styling with glassy effects:\n```css\n.blog-card {\n  background: var(--glass-bg);\n  backdrop-filter: blur(10px);\n  border: 1px solid var(--glass-border);\n  border-radius: 16px;\n  padding: 24px;\n  transition: all 0.3s ease;\n  cursor: pointer;\n}\n\n.blog-card:hover {\n  transform: translateY(-4px);\n  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);\n}\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🔗 Step 2: GitHub Integration Service"
+          },
+          {
+            "type": "paragraph",
+            "text": "The core of our blog is the GitHub integration service. Here's the complete implementation:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```javascript\n// blogService.js\nconst GITHUB_RAW_URL = 'https://raw.githubusercontent.com/skryshtafovych/web3/main/blog.json';\nconst CACHE_DURATION = 5 * 60 * 1000; // 5 minutes\nconst CACHE_KEY = 'stepank_blog_cache';\nconst CACHE_TIMESTAMP_KEY = 'stepank_blog_cache_timestamp';\n\nclass BlogService {\n  constructor() {\n    this.cache = null;\n    this.cacheTimestamp = null;\n    this.loadCacheFromStorage();\n  }\n\n  loadCacheFromStorage() {\n    try {\n      const cachedData = localStorage.getItem(CACHE_KEY);\n      const cachedTimestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);\n      \n      if (cachedData && cachedTimestamp) {\n        const timestamp = parseInt(cachedTimestamp);\n        const now = Date.now();\n        \n        if (now - timestamp < CACHE_DURATION) {\n          this.cache = JSON.parse(cachedData);\n          this.cacheTimestamp = timestamp;\n        } else {\n          this.clearCache();\n        }\n      }\n    } catch (error) {\n      this.clearCache();\n    }\n  }\n```"
+          },
+          {
+            "type": "paragraph",
+            "text": "The fetch method with comprehensive error handling:\n```javascript\n  async fetchBlogData() {\n    try {\n      // Check cache first\n      if (this.cache && this.cacheTimestamp && \n          (Date.now() - this.cacheTimestamp) < CACHE_DURATION) {\n        return this.cache;\n      }\n\n      const response = await fetch(GITHUB_RAW_URL);\n      \n      if (!response.ok) {\n        throw new Error(`HTTP error! status: ${response.status}`);\n      }\n      \n      const data = await response.json();\n      const transformedData = this.transformBlogData(data);\n      \n      // Cache the result\n      this.cache = transformedData;\n      this.cacheTimestamp = Date.now();\n      this.saveCacheToStorage(transformedData);\n      \n      return transformedData;\n    } catch (error) {\n      // Fallback to localStorage cache\n      const cachedData = localStorage.getItem(CACHE_KEY);\n      if (cachedData) {\n        return JSON.parse(cachedData);\n      }\n      throw error;\n    }\n  }\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🔄 Step 3: Data Transformation Layer"
+          },
+          {
+            "type": "paragraph",
+            "text": "The transformation layer converts GitHub JSON to our internal format:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```javascript\n  transformBlogData(rawData) {\n    const blog = rawData.blog;\n    \n    if (!blog) {\n      return { posts: [], categories: [] };\n    }\n    \n    // Handle posts array format\n    if (blog.posts && Array.isArray(blog.posts)) {\n      const transformedPosts = blog.posts.map((post, index) => ({\n        id: index + 1,\n        title: post.title || 'Untitled Post',\n        author: post.author || 'Stepank',\n        date: post.date || new Date().toISOString().split('T')[0],\n        tags: post.tags || [],\n        summary: post.summary || 'No summary available',\n        content: post.content || [],\n        media: post.media || [],\n        extensible: post.extensible || false,\n        featured: post.featured || false,\n        readTime: post.readTime || this.calculateReadTime(post.content),\n        imageUrl: post.imageUrl || 'default-image-url',\n        slug: post.slug || this.generateSlug(post.title || 'untitled')\n      }));\n      \n      return {\n        posts: transformedPosts,\n        categories: blog.categories || this.generateCategories(transformedPosts.flatMap(p => p.tags))\n      };\n    }\n    \n    // Fallback for single post format\n    return {\n      posts: [this.createSinglePost(blog)],\n      categories: this.generateCategories(blog.tags || [])\n    };\n  }\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "✨ Step 4: Animated Card Expansion System"
+          },
+          {
+            "type": "paragraph",
+            "text": "The card expansion system uses React state and CSS animations:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```javascript\n// App.jsx - Card expansion logic\nconst [expandedCard, setExpandedCard] = useState(null);\n\nconst handleCardClick = (postId) => {\n  if (expandedCard === postId) {\n    setExpandedCard(null);\n  } else {\n    setExpandedCard(postId);\n    \n    // Smooth scroll to expanded card\n    setTimeout(() => {\n      const element = document.getElementById(`blog-card-${postId}`);\n      if (element) {\n        element.scrollIntoView({ \n          behavior: 'smooth', \n          block: 'start' \n        });\n      }\n    }, 300);\n  }\n};\n```"
+          },
+          {
+            "type": "paragraph",
+            "text": "CSS for smooth expansion animations:\n```css\n.blog-card {\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n  max-height: 400px;\n  overflow: hidden;\n}\n\n.blog-card.expanded {\n  max-height: 2000px;\n  grid-column: 1 / -1;\n  z-index: 10;\n}\n\n.blog-card-expanded-content {\n  opacity: 0;\n  transform: translateY(20px);\n  transition: all 0.4s ease;\n}\n\n.blog-card.expanded .blog-card-expanded-content {\n  opacity: 1;\n  transform: translateY(0);\n}\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🎯 Step 5: Content Rendering System"
+          },
+          {
+            "type": "paragraph",
+            "text": "Our content rendering system handles different content types:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```javascript\nconst renderContent = (content) => {\n  if (!content || !Array.isArray(content)) return null;\n\n  return content.map((item, index) => {\n    switch (item.type) {\n      case 'paragraph':\n        return <p key={index}>{item.text}</p>;\n      case 'heading':\n        return <h3 key={index}>{item.text}</h3>;\n      case 'analogy':\n        return (\n          <div key={index} className=\"analogy\">\n            <strong>Analogy:</strong> {item.text}\n          </div>\n        );\n      default:\n        return <p key={index}>{item.text}</p>;\n    }\n  });\n};\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🔧 Step 6: Debug and Development Tools"
+          },
+          {
+            "type": "paragraph",
+            "text": "We built comprehensive debugging tools for development:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```javascript\n// Cache debugging component\nfunction CacheInfo() {\n  const [cacheInfo, setCacheInfo] = useState(blogService.getCacheInfo());\n\n  useEffect(() => {\n    const interval = setInterval(() => {\n      setCacheInfo(blogService.getCacheInfo());\n    }, 1000);\n    return () => clearInterval(interval);\n  }, []);\n\n  if (!cacheInfo.exists) {\n    return <span>❌ No cache</span>;\n  }\n\n  return (\n    <span style={{ \n      color: cacheInfo.isExpired ? '#ef4444' : '#10b981',\n      fontWeight: 'bold' \n    }}>\n      {cacheInfo.isExpired ? '⚠️' : '✅'} Cache: {cacheInfo.ageMinutes}m old\n    </span>\n  );\n}\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "📊 Step 7: Category Filtering System"
+          },
+          {
+            "type": "paragraph",
+            "text": "Dynamic category filtering with real-time updates:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```javascript\nconst [selectedCategory, setSelectedCategory] = useState('all');\n\nconst filteredPosts = selectedCategory === 'all' \n  ? blogData.posts \n  : blogData.posts.filter(post => \n      post.tags.some(tag => \n        blogData.categories.find(cat => \n          cat.slug === selectedCategory\n        )?.name.toLowerCase().includes(tag.toLowerCase())\n      )\n    );\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🚀 Step 8: Performance Optimizations"
+          },
+          {
+            "type": "paragraph",
+            "text": "Key performance optimizations we implemented:"
+          },
+          {
+            "type": "paragraph",
+            "text": "• **localStorage Caching**: 5-minute cache with automatic expiration\n• **Lazy Loading**: Content loads only when needed\n• **CSS Transitions**: Hardware-accelerated animations\n• **Efficient Re-renders**: React state optimization\n• **Error Boundaries**: Graceful fallbacks\n• **Memory Management**: Proper cleanup of intervals and listeners"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🔍 Step 9: Error Handling Strategy"
+          },
+          {
+            "type": "paragraph",
+            "text": "Comprehensive error handling at every layer:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```javascript\n// Service layer error handling\nasync fetchBlogData() {\n  try {\n    const response = await fetch(GITHUB_RAW_URL);\n    if (!response.ok) throw new Error(`HTTP ${response.status}`);\n    \n    const data = await response.json();\n    return this.transformBlogData(data);\n  } catch (error) {\n    // Fallback to cached data\n    const cachedData = localStorage.getItem(CACHE_KEY);\n    if (cachedData) return JSON.parse(cachedData);\n    \n    // Final fallback to local data\n    throw error;\n  }\n}\n\n// Component level error handling\nconst [error, setError] = useState(null);\n\nconst fetchBlogData = async () => {\n  try {\n    setLoading(true);\n    setError(null);\n    const data = await blogService.fetchBlogData();\n    setBlogData(data);\n  } catch (err) {\n    setError('Failed to load blog posts');\n    setBlogData({ posts: blogPosts, categories: categories });\n  } finally {\n    setLoading(false);\n  }\n};\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "📱 Step 10: Responsive Design Implementation"
+          },
+          {
+            "type": "paragraph",
+            "text": "Mobile-first responsive design with CSS Grid:"
+          },
+          {
+            "type": "paragraph",
+            "text": "```css\n.blog-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n  gap: 24px;\n  padding: 24px;\n}\n\n@media (max-width: 768px) {\n  .blog-grid {\n    grid-template-columns: 1fr;\n    gap: 16px;\n    padding: 16px;\n  }\n  \n  .blog-card {\n    padding: 16px;\n  }\n}\n```"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🎯 Key Technical Patterns"
+          },
+          {
+            "type": "paragraph",
+            "text": "**Service Layer Pattern**: Separated data logic from UI components\n**Component Composition**: Modular, reusable components\n**State Management**: Efficient React state with useEffect\n**Caching Strategy**: Multi-layer caching with fallbacks\n**Error Boundaries**: Graceful degradation\n**Performance Monitoring**: Real-time debugging tools"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🔧 Development Workflow"
+          },
+          {
+            "type": "paragraph",
+            "text": "1. **Local Development**: `npm run dev` for hot reloading\n2. **GitHub Integration**: Content updates via JSON file\n3. **Caching Strategy**: localStorage with 5-minute expiration\n4. **Debug Tools**: Real-time cache monitoring\n5. **Error Handling**: Comprehensive fallback system\n6. **Performance**: Optimized animations and loading"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🚀 Deployment Ready"
+          },
+          {
+            "type": "paragraph",
+            "text": "The blog is production-ready with:\n• Optimized bundle size\n• Efficient caching\n• Error handling\n• Responsive design\n• Performance monitoring\n• SEO-friendly structure"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "💡 Next Steps"
+          },
+          {
+            "type": "paragraph",
+            "text": "To extend this blog:\n• Add IPFS hosting for true decentralization\n• Implement ENS domain resolution\n• Add decentralized comments system\n• Integrate Web3 wallet connections\n• Add content search functionality\n• Implement social sharing features"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🎉 Conclusion"
+          },
+          {
+            "type": "paragraph",
+            "text": "This technical implementation demonstrates modern web development best practices. The combination of React, GitHub integration, intelligent caching, and smooth animations creates a powerful, maintainable blog platform ready for the decentralized web."
+          },
+          {
+            "type": "paragraph",
+            "text": "The code is modular, well-documented, and follows industry standards. Each component serves a specific purpose, making the system easy to understand, debug, and extend. This foundation can be built upon to create even more sophisticated Web3 applications."
+          }
+        ],
+        "media": [],
+        "extensible": true
+      },
+      {
+        "id": "web3-blockchain-fundamentals",
+        "title": "Understanding Web3 and Blockchain: A Beginner's Guide to the Decentralized Future",
+        "author": "Stepank",
+        "date": "2025-01-10",
+        "lastModified": "2025-01-10T14:30:00Z",
+        "tags": ["Web3", "Blockchain", "Cryptocurrency", "DeFi", "NFTs", "Smart Contracts", "Ethereum", "Beginner"],
+        "summary": "A comprehensive introduction to Web3 and blockchain technology, explaining the fundamentals, key concepts, and real-world applications in simple terms.",
+        "readTime": "15 min read",
+        "featured": false,
+        "imageUrl": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
+        "slug": "web3-blockchain-fundamentals",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "Web3 represents the next evolution of the internet, moving from centralized platforms to a decentralized, user-owned web. This guide will walk you through the fundamental concepts of Web3 and blockchain technology, making complex ideas accessible to everyone."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🌐 What is Web3?"
+          },
+          {
+            "type": "paragraph",
+            "text": "Web3 is the third generation of the internet, characterized by decentralization, blockchain technology, and user ownership of data and digital assets. Unlike Web2 (the current social media era), Web3 gives users true control over their digital lives."
+          },
+          {
+            "type": "analogy",
+            "text": "Think of Web3 like a digital democracy. Instead of a few big companies controlling everything (like Facebook or Google), users collectively own and govern the platforms they use."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "⛓️ Blockchain: The Foundation"
+          },
+          {
+            "type": "paragraph",
+            "text": "Blockchain is the technology that makes Web3 possible. It's a distributed ledger that records transactions across a network of computers, ensuring transparency, security, and immutability."
+          },
+          {
+            "type": "paragraph",
+            "text": "Key characteristics of blockchain:\n• **Decentralized**: No single entity controls the network\n• **Transparent**: All transactions are publicly visible\n• **Immutable**: Once recorded, data cannot be altered\n• **Secure**: Cryptography protects against fraud and hacking"
+          },
+          {
+            "type": "analogy",
+            "text": "A blockchain is like a digital ledger that everyone can see and verify, but no one can tamper with. It's like a public spreadsheet that updates automatically and is protected by advanced mathematics."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "💰 Cryptocurrencies and Tokens"
+          },
+          {
+            "type": "paragraph",
+            "text": "Cryptocurrencies are digital or virtual currencies that use cryptography for security. Bitcoin, the first cryptocurrency, was created in 2009 by the mysterious Satoshi Nakamoto."
+          },
+          {
+            "type": "paragraph",
+            "text": "Types of digital assets:\n• **Cryptocurrencies**: Digital money (Bitcoin, Ethereum)\n• **Tokens**: Digital assets representing ownership or utility\n• **NFTs**: Non-fungible tokens representing unique digital items\n• **Stablecoins**: Cryptocurrencies pegged to stable assets like USD"
+          },
+          {
+            "type": "analogy",
+            "text": "Think of cryptocurrencies as digital cash, tokens as digital shares or loyalty points, and NFTs as digital collectibles or certificates of ownership."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🤖 Smart Contracts"
+          },
+          {
+            "type": "paragraph",
+            "text": "Smart contracts are self-executing contracts with the terms directly written into code. They automatically execute when predetermined conditions are met, eliminating the need for intermediaries."
+          },
+          {
+            "type": "paragraph",
+            "text": "Smart contract applications:\n• **DeFi (Decentralized Finance)**: Lending, borrowing, trading\n• **NFT Marketplaces**: Buying and selling digital art\n• **Gaming**: In-game assets and economies\n• **Supply Chain**: Tracking and verifying products"
+          },
+          {
+            "type": "analogy",
+            "text": "A smart contract is like a vending machine. You put in money, and it automatically gives you the product. No human intervention needed, and the machine always follows its programmed rules."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🏦 DeFi: Decentralized Finance"
+          },
+          {
+            "type": "paragraph",
+            "text": "DeFi represents a new financial system built on blockchain technology, offering traditional financial services without intermediaries like banks."
+          },
+          {
+            "type": "paragraph",
+            "text": "Popular DeFi applications:\n• **Lending Platforms**: Borrow and lend crypto assets\n• **DEXs (Decentralized Exchanges)**: Trade cryptocurrencies peer-to-peer\n• **Yield Farming**: Earn interest on crypto deposits\n• **Stablecoins**: Digital currencies with stable value"
+          },
+          {
+            "type": "analogy",
+            "text": "DeFi is like having a bank in your pocket, but instead of trusting a single institution, you're trusting code that everyone can verify and audit."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🎨 NFTs: Digital Ownership"
+          },
+          {
+            "type": "paragraph",
+            "text": "NFTs (Non-Fungible Tokens) represent unique digital assets that cannot be replicated or replaced. They've revolutionized digital art, gaming, and collectibles."
+          },
+          {
+            "type": "paragraph",
+            "text": "NFT use cases:\n• **Digital Art**: Artists can sell unique digital pieces\n• **Gaming**: In-game items and characters\n• **Music**: Exclusive tracks and albums\n• **Real Estate**: Fractional ownership of properties\n• **Identity**: Digital identity and credentials"
+          },
+          {
+            "type": "analogy",
+            "text": "An NFT is like a digital certificate of authenticity. Just like you can own an original painting, you can own an original digital artwork that's verified on the blockchain."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🔐 Web3 Wallets"
+          },
+          {
+            "type": "paragraph",
+            "text": "Web3 wallets are digital tools that allow users to store, send, and receive cryptocurrencies and interact with decentralized applications (dApps)."
+          },
+          {
+            "type": "paragraph",
+            "text": "Popular wallet types:\n• **MetaMask**: Browser extension wallet\n• **WalletConnect**: Mobile wallet connection\n• **Hardware Wallets**: Physical devices for maximum security\n• **Mobile Wallets**: Apps for smartphones"
+          },
+          {
+            "type": "analogy",
+            "text": "A Web3 wallet is like a digital passport and bank account combined. It proves your identity and holds your digital assets, allowing you to participate in the Web3 ecosystem."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🌍 Real-World Applications"
+          },
+          {
+            "type": "paragraph",
+            "text": "Web3 is already transforming various industries and creating new opportunities:"
+          },
+          {
+            "type": "paragraph",
+            "text": "**Finance**: DeFi platforms offering lending, borrowing, and trading\n**Art**: NFT marketplaces for digital artists\n**Gaming**: Play-to-earn games with real economic value\n**Social Media**: Decentralized platforms where users own their data\n**Supply Chain**: Transparent tracking of products from source to consumer\n**Healthcare**: Secure sharing of medical records\n**Voting**: Transparent and tamper-proof voting systems"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🚀 Getting Started with Web3"
+          },
+          {
+            "type": "paragraph",
+            "text": "Ready to dive into Web3? Here's how to get started:"
+          },
+          {
+            "type": "paragraph",
+            "text": "1. **Get a Wallet**: Download MetaMask or another Web3 wallet\n2. **Buy Some Crypto**: Purchase Ethereum or other cryptocurrencies\n3. **Explore dApps**: Visit decentralized applications like Uniswap or OpenSea\n4. **Learn by Doing**: Try small transactions to understand the process\n5. **Join Communities**: Connect with other Web3 enthusiasts on Discord or Twitter"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "⚠️ Important Considerations"
+          },
+          {
+            "type": "paragraph",
+            "text": "While Web3 offers exciting opportunities, it's important to be aware of the risks:"
+          },
+          {
+            "type": "paragraph",
+            "text": "**Security**: Never share your private keys or seed phrases\n**Volatility**: Cryptocurrency prices can be highly volatile\n**Regulation**: The regulatory landscape is still evolving\n**Technical Complexity**: Web3 can be complex for beginners\n**Scams**: Be cautious of fraudulent projects and schemes"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🔮 The Future of Web3"
+          },
+          {
+            "type": "paragraph",
+            "text": "Web3 is still in its early stages, but the potential is enormous. We're moving toward a future where:"
+          },
+          {
+            "type": "paragraph",
+            "text": "• Users own their data and digital assets\n• Financial services are accessible to everyone\n• Artists and creators are fairly compensated\n• Trust is built through code rather than institutions\n• The internet is truly decentralized and democratic"
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "text": "🎯 Conclusion"
+          },
+          {
+            "type": "paragraph",
+            "text": "Web3 represents a fundamental shift in how we think about the internet and digital ownership. While the technology is complex, the core idea is simple: giving power back to users and creating a more equitable digital world."
+          },
+          {
+            "type": "paragraph",
+            "text": "Whether you're a developer, investor, artist, or simply curious about the future of technology, understanding Web3 is essential. The decentralized future is being built today, and everyone has the opportunity to participate in shaping it."
+          },
+          {
+            "type": "paragraph",
+            "text": "Start small, learn continuously, and remember that the Web3 community is generally welcoming to newcomers. The journey into the decentralized future begins with a single step - and that step could be reading this guide."
+          }
+        ],
+        "media": [],
+        "extensible": true
+      },
+      {
+        "id": "building-web3-blog-tutorial",
+        "title": "Building a Modern Web3 Blog: From React to GitHub Integration",
+        "author": "Stepank",
+        "date": "2025-01-15",
+        "lastModified": "2025-01-15T15:00:00Z",
+        "tags": ["React", "Web3", "Tutorial", "GitHub", "localStorage", "Caching", "Modern UI"],
+        "summary": "A step-by-step tutorial on building a modern Web3 blog with React, GitHub integration, localStorage caching, and beautiful animations.",
+        "readTime": "15 min read",
+        "featured": false,
+        "imageUrl": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop",
+        "slug": "building-web3-blog-tutorial",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "In this comprehensive tutorial, we'll build a modern Web3 blog from scratch using React, Vite, and cutting-edge web technologies. We'll cover everything from initial setup to advanced features like GitHub integration, localStorage caching, and smooth animations. By the end, you'll have a beautiful, functional blog that's ready for the decentralized web."
+          }
+        ],
+        "media": [],
+        "extensible": true
+      },
+      {
+        "id": "decentralized-hosting-2025",
+        "title": "What Does Decentralized Hosting Mean for You?",
+        "author": "Stepank",
+        "date": "2025-06-30",
+        "lastModified": "2025-06-30T14:00:00Z",
+        "tags": ["Web3", "Decentralization", "IPFS", "ENS", "Hosting"],
+        "summary": "A simple explanation of decentralized hosting and why it matters for the future of the web.",
+        "readTime": "8 min read",
+        "featured": false,
+        "imageUrl": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
+        "slug": "what-does-decentralized-hosting-mean",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "Imagine your website like a book. In the old internet (what we now call Web2), that book lived in one giant, very fancy library building (a traditional server). If that library had a problem – a power outage, a fire, or if someone decided they didn't like your book and locked the doors – then no one could read it. Your website would be down. And for people to even find this specific library, there's a big, central phone book service (DNS) that tells everyone its exact street address."
+          }
+        ],
+        "media": [],
+        "extensible": true
+      },
+      {
+        "id": "smart-contracts-2025",
+        "title": "Building Your First Smart Contract",
+        "author": "Stepank",
+        "date": "2025-01-15",
+        "lastModified": "2025-01-15T09:00:00Z",
+        "tags": ["Solidity", "Ethereum", "Smart Contracts", "Development"],
+        "summary": "A beginner's guide to creating and deploying smart contracts on Ethereum using Solidity.",
+        "readTime": "12 min read",
+        "featured": false,
+        "imageUrl": "https://images.unsplash.com/photo-1639762681057-408e52192e55?w=400&h=250&fit=crop",
+        "slug": "building-first-smart-contract",
+        "content": [
+          {
+            "type": "paragraph",
+            "text": "Smart contracts are the building blocks of the decentralized world. Let's explore how to create your first one..."
+          }
+        ],
+        "media": [],
+        "extensible": true
+      }
+    ],
+    "categories": [
+      {
+        "name": "All",
+        "slug": "all",
+        "description": "All blog posts",
+        "count": 4
+      },
+      {
+        "name": "Tutorial",
+        "slug": "tutorial",
+        "description": "Step-by-step guides and tutorials",
+        "count": 2
+      },
+      {
+        "name": "Web3",
+        "slug": "web3",
+        "description": "Web3 and decentralization topics",
+        "count": 3
+      },
+      {
+        "name": "Development",
+        "slug": "development",
+        "description": "Development tutorials and guides",
+        "count": 3
+      },
+      {
+        "name": "Smart Contracts",
+        "slug": "smart-contracts",
+        "description": "Smart contract development",
+        "count": 1
+      }
+    ]
+  }
+} 
