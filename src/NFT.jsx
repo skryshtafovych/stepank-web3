@@ -304,9 +304,10 @@ function NFT() {
                       <div key={collectionName} className="collection-card glass">
                         <div className="collection-header">
                           <img 
-                            src={collectionNFTs[0]?.image_url || "https://via.placeholder.com/80x80/1e40af/ffffff?text=COLL"} 
+                            src={collectionNFTs[0]?.image_url || "/nft-fallback.png"} 
                             alt={collectionName} 
                             className="collection-image" 
+                            onError={e => { e.target.onerror = null; e.target.src = "/nft-fallback.png"; }}
                           />
                           <div className="collection-info">
                             <h3>{collectionName}</h3>
@@ -320,10 +321,11 @@ function NFT() {
                           {collectionNFTs.slice(0, 6).map(nft => (
                             <div key={nft.identifier} className="nft-item">
                               <img 
-                                src={nft.image_url || "https://via.placeholder.com/120x120/6b7280/ffffff?text=NFT"} 
+                                src={nft.image_url || "/nft-fallback.png"} 
                                 alt={nft.name} 
                                 onError={(e) => {
-                                  e.target.src = "https://via.placeholder.com/120x120/6b7280/ffffff?text=NFT";
+                                  e.target.onerror = null;
+                                  e.target.src = "/nft-fallback.png";
                                 }}
                               />
                               <div className="nft-item-info">

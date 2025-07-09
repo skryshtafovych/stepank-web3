@@ -9,7 +9,7 @@ import { blogPosts, categories } from './blogData'
 import { blogService } from './blogService'
 import Security from './Security'
 import About from './About'
-import Portfolio from './NFT'
+import NFT from './NFT'
 
 // Import the GitHub URL for debugging
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/skryshtafovych/web3/main/blog.json';
