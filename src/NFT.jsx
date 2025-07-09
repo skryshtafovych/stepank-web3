@@ -152,6 +152,15 @@ function NFT() {
           collection: "Sample Collection",
           contract: "0x123...",
           token_standard: "ERC721"
+        },
+        {
+          identifier: "2",
+          name: "Blockchain Address NFT",
+          description: "Unique blockchain address as digital collectible",
+          image_url: "https://via.placeholder.com/300x300/6366f1/ffffff?text=ADDR",
+          collection: "Blockchain Address Collection",
+          contract: "0xb590ba8f60b0b4b094610575cb4c8a2c60ef4f78",
+          token_standard: "ERC721"
         }
       ]);
     } finally {
