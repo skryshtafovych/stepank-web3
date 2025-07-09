@@ -9,6 +9,7 @@ import { blogPosts, categories } from './blogData'
 import { blogService } from './blogService'
 import Security from './Security'
 import About from './About'
+import Portfolio from './NFT'
 
 // Import the GitHub URL for debugging
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/skryshtafovych/web3/main/blog.json';
@@ -341,12 +342,14 @@ function App() {
         <Link to="/github" className={`nav-item ${location.pathname === '/github' ? 'active' : ''}`}>GitHub</Link>
         <Link to="/security" className={`nav-item ${location.pathname === '/security' ? 'active' : ''}`}>Security</Link>
         <Link to="/about" className={`nav-item ${location.pathname === '/about' ? 'active' : ''}`}>About</Link>
+        <Link to="/NFT" className={`nav-item ${location.pathname === '/NFT' ? 'active' : ''}`}>NFT</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/github" element={<GitHub />} />
         <Route path="/security" element={<Security />} />
         <Route path="/about" element={<About />} />
+        <Route path="/NFT" element={<NFT />} />
       </Routes>
     </Router>
   );
