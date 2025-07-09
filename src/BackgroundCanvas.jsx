@@ -61,7 +61,6 @@ function BackgroundCanvas() {
           disabled={isGenerating}
           style={{
             background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-            border: 'none',
             color: '#1f2937',
             padding: '8px 16px',
             borderRadius: '8px',

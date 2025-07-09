@@ -8,6 +8,17 @@ This is a dynamic portfolio website for Stepan Kryshtafovych, built with React a
 - **Audio Visualization:** An interactive audio visualizer for both file-based and microphone input.
 - **Secure by Design:** API keys are handled by a backend server and are not exposed to the client.
 - **Containerized:** The entire application can be built and run with Docker.
+- **Web3 Portfolio:** Showcase NFTs, DeFi tokens, and digital collectibles.
+- **Responsive Design:** Optimized for mobile and desktop viewing.
+
+## Quick Deploy
+```bash
+# Deploy to Google App Engine (Production)
+gcloud app deploy
+
+# View the deployed application
+gcloud app browse
+```
 
 ## Local Development
 
@@ -30,6 +41,41 @@ To run the project locally, follow these steps:
     npm run dev
     ```
     The application will be available at `http://localhost:5173`.
+
+## Google App Engine Deployment
+
+The application is deployed on Google App Engine for production. To deploy:
+
+1.  **Install Google Cloud CLI:**
+    Make sure you have the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) installed and configured.
+
+2.  **Set Environment Variables:**
+    Set your Gemini API key as an environment variable:
+    ```bash
+    export GEMINI_API_KEY="YOUR_API_KEY"
+    ```
+
+3.  **Deploy to App Engine:**
+    ```bash
+    gcloud app deploy
+    ```
+    This command will:
+    - Build the application using the `gcp-build` script
+    - Deploy it to Google App Engine
+    - Provide you with the live URL
+
+4.  **View the Application:**
+    ```bash
+    gcloud app browse
+    ```
+    Or visit the URL provided after deployment.
+
+### App Engine Configuration
+The application uses the following configuration in `app.yaml`:
+- **Runtime:** Node.js 20
+- **Environment:** Standard
+- **Instance Class:** F1 (free tier)
+- **Scaling:** Automatic with 1 instance limit
 
 ## Docker Deployment
 

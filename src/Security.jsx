@@ -7,7 +7,7 @@ function Security() {
   const [error, setError] = useState(null);
   const [micError, setMicError] = useState(null);
   const [httpsWarning, setHttpsWarning] = useState(false);
-  const [isVisualizerOpen, setIsVisualizerOpen] = useState(true);
+  const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
 
   const visualizer = useRef(null);
 
