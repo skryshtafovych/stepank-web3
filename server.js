@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
 
 dotenv.config();
 
@@ -24,6 +25,25 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// Verify reCAPTCHA token
+const verifyRecaptcha = async (token) => {
+  try {
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
+    });
+
+    const data = await response.json();
+    return data.success && data.score >= 0.5; // Accept scores >= 0.5
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error);
+    return false;
+  }
+};
 
 app.post('/api/rewrite', async (req, res) => {
   try {
