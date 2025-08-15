@@ -1,0 +1,510 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Home - Protein Structure Prediction Center</title>
+    <link rel="icon" href="https://predictioncenter.org/favicon.ico" type="image/x-icon" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Georgia&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+        /* Modern CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- MODERN & SLEEK STYLING INSPIRED BY NATURE.COM --- */
+        :root {
+            --primary-color: #333333;
+            --secondary-color: #006699; /* A professional blue */
+            --accent-color: #D84B20; /* A subtle orange accent */
+            --background-color: #F9F9F9;
+            --border-color: #EAEAEA;
+            --header-bg: #FFFFFF;
+            --text-primary: #262626;
+            --text-secondary: #555555;
+            --font-sans-serif: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            --font-serif: 'Georgia', serif;
+        }
+
+        body {
+            font-family: var(--font-sans-serif);
+            background-color: var(--background-color) !important;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .page-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* --- HEADER --- */
+        .main-header {
+            background-color: var(--header-bg);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-title a {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .header-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .header-nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- MAIN CONTENT LAYOUT --- */
+        .main-container {
+            display: flex;
+            padding: 1.5rem;
+        }
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding-left: 2rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        /* --- SIDEBAR MENU --- */
+        .menu-box, .message-board {
+            background-color: #FFFFFF;
+            margin-bottom: 1.5rem;
+        }
+        .menu-box-header {
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--secondary-color);
+            color: var(--primary-color);
+        }
+        /* Hiding old menu table structure */
+        td[style*="width: 190px; vertical-align: top"] > table {
+             background: none !important;
+        }
+        td.menu-header { display: none; }
+        
+        /* New Menu Tree Style */
+        .treemenu { padding: 0.5rem 1rem; }
+        .treemenu a {
+            display: block;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-weight: 400 !important;
+        }
+        .treemenu a:hover {
+            color: var(--accent-color);
+        }
+        .treemenu a strong {
+             font-weight: 700 !important;
+             color: var(--text-primary) !important;
+        }
+        .treemenu .ygtvitem { border: none !important; }
+        .treemenu .ygtvlabel { font-family: var(--font-sans-serif) !important; font-size: 14px !important; }
+        
+        /* --- ARTICLE/CONTENT STYLING --- */
+        .content-section {
+            margin-bottom: 2.5rem;
+        }
+        .content-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+        .content-body p, .content-body a {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        .content-body a {
+            color: var(--secondary-color);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+            font-weight: normal !important;
+        }
+        .content-body a:hover {
+            color: var(--accent-color);
+        }
+        .content-body strong {
+             font-family: var(--font-sans-serif);
+        }
+
+        /* --- SUCCESS STORIES SLIDESHOW --- */
+        .slideshow-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        .slideshow-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .slideshow-tab:hover {
+            color: var(--primary-color);
+        }
+        .slideshow-tab.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+        #pauseTab { margin-left: auto; color: #999; }
+
+        .slideshow-panel {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .panel-media { text-align: center; }
+        .panel-media img, .panel-media video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .panel-description { font-family: var(--font-serif); font-size: 1rem; line-height: 1.6; }
+        
+        /* --- FOOTER --- */
+        .main-footer {
+            background-color: #262626;
+            color: #FFFFFF;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .footer-left .title-bottom {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .footer-left p, .footer-left a {
+            font-size: 0.85rem;
+            color: #CCCCCC;
+            line-height: 1.5;
+            text-decoration: none;
+        }
+        .footer-left a:hover {
+            text-decoration: underline;
+        }
+        .footer-right img {
+             opacity: 0.7;
+        }
+        
+        /* Hiding old structure elements */
+        table[style*="height: 4px"], table[style*="height: 10px; background: #D8D8D8"], img[src="https://predictioncenter.org/images/undermenu2.gif"] {
+             display: none !important;
+        }
+        
+    </style>
+    <script type="text/javascript" src="https://predictioncenter.org/main.js"></script>
+    <script>
+        var curIndex = 0;
+        var blocks2show = ['zero', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
+        var timeStep = 30000;
+        var playSlideShow = 1;
+        var interval;
+
+        function selectBlock2Show(i) {
+            if (i >= blocks2show.length) i = 0;
+            if (i < 0) i = blocks2show.length - 1;
+
+            blocks2show.forEach((blockId, index) => {
+                document.getElementById(blockId).style.display = (index === i) ? 'grid' : 'none';
+                const tab = document.querySelector(`.slideshow-tab[onclick*="${index}"]`);
+                if (tab) {
+                    if (index === i) tab.classList.add('active');
+                    else tab.classList.remove('active');
+                }
+            });
+            
+            curIndex = i;
+            clearInterval(interval);
+            if (playSlideShow === 1) {
+                interval = setInterval(selectNext, timeStep);
+            }
+        }
+
+        function selectNext() {
+            curIndex = (curIndex + 1) % blocks2show.length;
+            selectBlock2Show(curIndex);
+        }
+
+        function slideShow() {
+            const pauseTab = document.getElementById("pauseTab");
+            if (playSlideShow === 1) {
+                playSlideShow = 0;
+                clearInterval(interval);
+                pauseTab.innerHTML = "&#9658;"; /* Play icon */
+            } else {
+                playSlideShow = 1;
+                interval = setInterval(selectNext, timeStep);
+                pauseTab.innerHTML = "||";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            interval = setInterval(selectNext, timeStep);
+            selectBlock2Show(0);
+        });
+
+    </script>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+
+        <header class="main-header">
+            <div class="header-title">
+                <a href="https://predictioncenter.org/index.cgi">Protein Structure Prediction Center</a>
+            </div>
+            <nav class="header-nav">
+                <a href="https://predictioncenter.org">Home</a>
+                <a href="javascript:create_bookmark(document.title,location.href);">Bookmark</a>
+                <a href="javascript:print_page();">Print</a>
+                <script type="text/javascript">
+                    document.write('<a href="mailto:' + email('casp', 'predictioncenter.org') + '">Contact<\/a>');
+                </script>
+            </nav>
+        </header>
+
+        <div class="main-container">
+
+            <aside class="sidebar">
+                <div class="menu-box">
+                    <div class="menu-box-header">Navigation</div>
+                    <div id="mainmenu" class="treemenu"></div>
+                </div>
+                <div class="message-board">
+                     <div class="menu-box-header">Message Board</div>
+                     <div style="padding: 1rem; font-size: 0.85rem; line-height: 1.5;">
+                        <p><b><a href="https://predictioncenter.org/news.cgi#540" style="color: var(--primary-color);">Interim CASP funding</a></b><br>As some will be aware, CASP has run into funding difficulties...</p>
+                        <br>
+                        <p><b><a href="https://predictioncenter.org/news.cgi#539" style="color: var(--primary-color);">CASP Special Interest Group...</a></b><br>The next CASP SIG on Modeling Ensembles... will be held via Zoom...</p>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="main-content">
+
+                <section class="content-section">
+                    <h1 class="content-title">Success Stories From Recent CASPs</h1>
+                    <div class="slideshow-container">
+                        <div class="slideshow-tabs">
+                            <div class="slideshow-tab active" onclick="selectBlock2Show(0)">Assembly Modeling</div>
+                            <div class="slideshow-tab" onclick="selectBlock2Show(1)">Template-Based</div>
+                            <div class="slideshow-tab" onclick="selectBlock2Show(2)">Ab Initio</div>
+                            <div class="slideshow-tab" onclick="selectBlock2Show(3)">Contact Prediction</div>
+                            <div class="slideshow-tab" onclick="selectBlock2Show(4)">Experiment Aid</div>
+                            <div class="slideshow-tab" onclick="selectBlock2Show(5)">Refinement</div>
+                            <div class="slideshow-tab" onclick="selectBlock2Show(6)">Data-Assisted</div>
+                            <div id="pauseTab" class="slideshow-tab" onclick="slideShow()">||</div>
+                        </div>
+
+                        <div id="zero" class="slideshow-panel">
+                            <div class="panel-media">
+                                <video id="videoT1113o" width="330" autoplay loop muted playsinline>
+                                   <source src="https://predictioncenter.org/video/T1113o-T1113TS239_2o.mp4" type="video/mp4">
+                                   <source src="https://predictioncenter.org/video/T1113o-T1113TS239_2o.webm" type="video/webm">
+                                </video>
+                                <img src="https://predictioncenter.org/images/assembly_F1_LDDTo_CASP15.jpg" alt="Assembly Modeling Graph">
+                            </div>
+                            <div class="panel-description">
+                                <p>CASP15 (2022) showed enormous progress in modeling multimolecular protein complexes. The assembly modeling has been assessed in CASP since 2016. After the success of AlphaFold2 in CASP14, it was expected that deep learning methodology would be extended to multimeric modeling. Indeed, CASP15 showed that newly developed methods are capable of accurately reproducing structures of oligomeric complexes and outperform CASP14 methods by a large margin.</p>
+                            </div>
+                        </div>
+                        
+                        <div id="first" class="slideshow-panel" style="display: none;">
+                            <div class="panel-media">
+                                <img src="https://predictioncenter.org/images/TBMgraph_2019.png" alt="Template-Based Modeling Graph 1">
+                                <img src="https://predictioncenter.org/images/G427web.png" alt="Template-Based Modeling Graph 2">
+                            </div>
+                            <div class="panel-description">
+                                <p>Models based on templates identified by sequence similarity remain the most accurate. Over the course of the CASP experiments there have been enormous improvements in this area, with a new burst of progress in CASP12 (2016). CASP14 marked an extraordinary increase in accuracy with the emergence of AlphaFold2.</p>
+                            </div>
+                        </div>
+
+                        <div id="second" class="slideshow-panel" style="display: none;">
+                             <div class="panel-media">
+                                <video width="180" autoplay loop muted playsinline>
+                                    <source src="https://predictioncenter.org/video/T0866.mp4" type="video/mp4">
+                                </video>
+                                <img src="https://predictioncenter.org/images/ProgressFig4web.png" alt="Ab Initio Progress">
+                            </div>
+                            <div class="panel-description">
+                                <p>Modeling proteins with no similarity to existing structures (ab initio) is the most challenging task. CASP has witnessed sustained progress, especially for small proteins. CASP13 and CASP14 saw substantial improvements due to advanced deep learning techniques, with AlphaFold2 models now competitive with experimental accuracy.</p>
+                            </div>
+                        </div>
+
+                        <div id="third" class="slideshow-panel" style="display: none;">
+                            <div class="panel-media">
+                                <img src="https://predictioncenter.org/images/casp14_contacts.png" alt="Contact Prediction Graph">
+                                <video width="180" autoplay loop muted playsinline>
+                                    <source src="https://predictioncenter.org/video/T0915.2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="panel-description">
+                                <p>The most notable progress in recent CASPs resulted from sustained improvement in methods for predicting contacts between residues. Average precision doubled from CASP11 to CASP12, and CASP13 registered another leap in accuracy. This theoretical advance has led to improved accuracy of 3D models.</p>
+                            </div>
+                        </div>
+
+                        <div id="fourth" class="slideshow-panel" style="display: none;">
+                            <div class="panel-media">
+                                <img src="https://predictioncenter.org/images/exp_help.png" alt="Experimental Help Example">
+                                <img src="https://predictioncenter.org/images/Exp1TitleProteins.png" alt="Proteins Paper Title">
+                            </div>
+                             <div class="panel-description">
+                                <p>In early CASPs, models occasionally helped solve structures, but these were exceptions. In CASP14, four structures were solved with the aid of AlphaFold2 models, demonstrating the power of new methods for all classes of modeling difficulty. A detailed account is provided in the Proteins paper by Kryshtafovych et al, 2021.</p>
+                            </div>
+                        </div>
+
+                        <div id="fifth" class="slideshow-panel" style="display: none;">
+                           <div class="panel-media">
+                                <video width="180" autoplay loop muted playsinline>
+                                    <source src="https://predictioncenter.org/video/TR894.mp4" type="video/mp4">
+                                </video>
+                                <video width="180" autoplay loop muted playsinline>
+                                    <source src="https://predictioncenter.org/video/TR884.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="panel-description">
+                                <p>The refinement category assesses the ability of methods to improve available models. CASP assessments show two trends: some molecular dynamics methods offer modest, consistent improvements, while more aggressive methods can provide substantial improvements, though sometimes at the price of consistency. The examples show notable refinements from CASP12.</p>
+                            </div>
+                        </div>
+                        
+                        <div id="sixth" class="slideshow-panel" style="display: none;">
+                             <div class="panel-media">
+                                <video width="180" autoplay loop muted playsinline>
+                                    <source src="https://predictioncenter.org/video/T0894.mp4" type="video/mp4">
+                                </video>
+                                <video width="180" autoplay loop muted playsinline>
+                                    <source src="https://predictioncenter.org/video/Tx894.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="panel-description">
+                                <p>Data-assisted modeling, where low-resolution experimental data are combined with computational methods, is increasingly important. CASP experiments have included a special sub-category for this. Examples from CASP12 demonstrate the increased accuracy of assisted predictions compared to non-assisted models from the same predictor.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h1 class="content-title">Welcome to the Protein Structure Prediction Center!</h1>
+                    <div class="content-body">
+                        <p>Our goal is to help advance the methods of identifying protein structure from sequence. The Center provides objective testing of these methods via blind prediction in the Critical Assessment of protein Structure Prediction (CASP) experiments.</p>
+                        <p>There have been fifteen previous CASP experiments, with the sixteenth planned for May 2024. You can access descriptions and full data via the navigation menu.</p>
+                        <p>Details of the experiments are published in the journal <em>Proteins: Structure, Function and Bioinformatics</em>. The <a href="https://predictioncenter.org/index.cgi?page=proceedings">CASP proceedings</a> include papers on the experiments, evaluation measures, and reports from assessment teams.</p>
+                        <hr style="margin: 2rem 0; border-top: 1px solid var(--border-color);">
+                        <div style="text-align: center;">
+                            <p>To proceed to the latest CASP experiment, click the logo below:</p>
+                            <a href="https://predictioncenter.org/casp16/index.cgi"><img src="https://predictioncenter.org/images/CASP16_logo.png" width="174" height="165" class="link-image" alt="CASP16 Home" /></a>
+                        </div>
+                    </div>
+                </section>
+                
+            </main>
+        </div>
+
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <div class="title-bottom">Protein Structure Prediction Center</div>
+                    <p>Sponsored by the <a href="http://www.nigms.nih.gov/">US National Institute of General Medical Sciences (NIH/NIGMS)</a></p>
+                    <p>Please address any questions to: 
+                        <script type="text/javascript">
+                            document.write('<a href="mailto:' + email('casp', 'predictioncenter.org') + '">' + email('casp', 'predictioncenter.org') + '<\/a>')
+                        </script>
+                    </p>
+                    <p>&copy; 2007-2025, University of California, Davis | <a href="https://creativecommons.org/licenses/by/4.0/">Terms of Use</a></p>
+                </div>
+                <div class="footer-right">
+                    <a href="https://predictioncenter.org"><img src="https://predictioncenter.org/images/thinker.gif" width="62" height="62" alt="Prediction Center Logo" /></a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://predictioncenter.org/yahoo.js"></script>
+    <script type="text/javascript" src="https://predictioncenter.org/event.js"></script>
+    <script type="text/javascript" src="https://predictioncenter.org/treeview.js"></script>
+    <script type="text/javascript" src="https://predictioncenter.org/jktreeview.js"></script>
+    <script type="text/javascript">
+        // This script populates the left-hand navigation menu.
+        var host_url = "https://predictioncenter.org";
+        var palmtree = new jktreeview("mainmenu")
+        palmtree.addItem("<strong>Home</strong>", "", host_url + "/index.cgi", false)
+        palmtree.addItem("<strong>PC Login</strong>", "", host_url + "/login.cgi", false)
+        palmtree.addItem("<strong>PC Registration</strong>", "", host_url + "/registration.cgi", false)
+        
+        var casp_branch = palmtree.addItem("<strong>CASP Experiments</strong>", "", host_url + "/index.cgi", true)
+        palmtree.addItem("CASP16 (2024)", casp_branch, host_url + "/casp16/index.cgi", false)
+        palmtree.addItem("CASP15 (2022)", casp_branch, host_url + "/casp15/index.cgi", false)
+        palmtree.addItem("CASP14 (2020)", casp_branch, host_url + "/casp14/index.cgi", false)
+        // ... more menu items from original file ...
+        
+        var downloads_branch = palmtree.addItem("<strong>Data Archive</strong>", "", host_url + "/download_area/", true)
+        palmtree.addItem("CASP16", downloads_branch, host_url + "/download_area/CASP16/", false)
+        palmtree.addItem("CASP15", downloads_branch, host_url + "/download_area/CASP15/", false)
+        // ... more menu items from original file ...
+        
+        palmtree.addItem("<strong>Proceedings</strong>", "", host_url + "/index.cgi?page=proceedings", false)
+        palmtree.addItem("<strong>People</strong>", "", host_url + "/index.cgi?page=people", false)
+        palmtree.addItem("<strong>Community Resources</strong>", "", host_url + "/index.cgi?page=links", false)
+        
+        palmtree.treetop.draw();
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LWBXQXXCES"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-LWBXQXXCES');
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+.knews-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem 1rem;
+  position: relative;
+}
+
+.knews-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2em;
+  text-align: center;
+  color: var(--accent-yellow, #ffe066);
+  text-shadow: 0 2px 16px #000a;
+}
+
+.knews-sub {
+  text-align: center;
+  color: var(--text-secondary, #bbb);
+  margin-bottom: 2.2rem;
+  font-size: 1.1rem;
+}
+
+.knews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.knews-card {
+  background: var(--glass-bg, rgba(30,30,40,0.7));
+  border: 1.5px solid var(--glass-border, #ffe06644);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px #0002;
+  padding: 1.5rem 1.7rem 1.2rem 1.7rem;
+  position: relative;
+  transition: box-shadow 0.2s;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+.knews-card:hover {
+  box-shadow: 0 8px 32px #ffe06633, 0 2px 16px #0003;
+}
+.knews-text {
+  font-size: 1.13rem;
+  color: var(--text-primary, #fff);
+  margin-bottom: 0.7em;
+  font-weight: 500;
+}
+.knews-link {
+  display: inline-block;
+  margin-top: 0.2em;
+  color: #ffe066;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.knews-link:hover {
+  color: #fffbe6;
+}
+.knews-drive-embed {
+  margin-top: 0.7em;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px #0002;
+}
+
+.star-anim {
+  position: absolute;
+  left: 50%;
+  font-size: 2.7rem;
+  color: #ffe066;
+  text-shadow: 0 2px 16px #000a;
+  transform: translateX(-50%);
+  z-index: 10;
+  transition: top 1.1s cubic-bezier(.7,.2,.3,1.1);
+}
+.star-top {
+  top: -1.2rem;
+}
+.star-bottom {
+  top: 3.7rem;
+} 

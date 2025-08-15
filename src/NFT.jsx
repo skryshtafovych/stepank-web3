@@ -21,35 +21,35 @@ function NFT() {
       name: "Ethereum",
       symbol: "ETH",
       balance: "12.5",
-      image: "https://via.placeholder.com/100x100/627eea/ffffff?text=ETH"
+      image: ""
     },
     {
       id: 2,
       name: "UkraineDAO",
       symbol: "UKRAINE",
       balance: "5000.0",
-      image: "https://via.placeholder.com/100x100/0057b8/ffffff?text=UKR"
+      image: ""
     },
     {
       id: 3,
       name: "Ski Resort Token",
       symbol: "SKI",
       balance: "10000.0",
-      image: "https://via.placeholder.com/100x100/1e40af/ffffff?text=SKI"
+      image: ""
     },
     {
       id: 4,
       name: "Carpathian Coin",
       symbol: "CARP",
       balance: "25000.0",
-      image: "https://via.placeholder.com/100x100/059669/ffffff?text=CARP"
+      image: ""
     },
     {
       id: 5,
       name: "Kyiv Winter Token",
       symbol: "KWT",
       balance: "8000.0",
-      image: "https://via.placeholder.com/100x100/dc2626/ffffff?text=KWT"
+      image: ""
     }
   ];
 
@@ -59,42 +59,42 @@ function NFT() {
       id: 1,
       name: "ENS Domain",
       domain: "stepank.eth",
-      image: "https://via.placeholder.com/200x200/6366f1/ffffff?text=ENS",
+      image: "",
       type: "Domain"
     },
     {
       id: 2,
       name: "Ukraine Support POAP",
       description: "Stand With Ukraine - Digital Resistance",
-      image: "https://via.placeholder.com/200x200/0057b8/ffffff?text=POAP",
+      image: "",
       type: "Badge"
     },
     {
       id: 3,
       name: "Bukovel Ski Pass NFT",
       description: "Lifetime access to Carpathian slopes",
-      image: "https://via.placeholder.com/200x200/1e40af/ffffff?text=PASS",
+      image: "",
       type: "Access"
     },
     {
       id: 4,
       name: "Kyiv Winter Olympics Badge",
       description: "2024 Digital Winter Games Participant",
-      image: "https://via.placeholder.com/200x200/dc2626/ffffff?text=OLYMP",
+      image: "",
       type: "Achievement"
     },
     {
       id: 5,
       name: "Carpathian Mountain Guide",
       description: "Certified digital mountain guide",
-      image: "https://via.placeholder.com/200x200/059669/ffffff?text=GUIDE",
+      image: "",
       type: "Certification"
     },
     {
       id: 6,
       name: "Ukrainian Folk Art NFT",
       description: "Traditional vyshyvanka pattern",
-      image: "https://via.placeholder.com/200x200/7c3aed/ffffff?text=FOLK",
+      image: "",
       type: "Art"
     }
   ];
@@ -148,7 +148,7 @@ function NFT() {
           identifier: "1",
           name: "Sample NFT #1",
           description: "Sample NFT from your collection",
-          image_url: "https://via.placeholder.com/300x300/1e40af/ffffff?text=NFT1",
+          image_url: "",
           collection: "Sample Collection",
           contract: "0x123...",
           token_standard: "ERC721"
@@ -157,7 +157,7 @@ function NFT() {
           identifier: "2",
           name: "Blockchain Address NFT",
           description: "Unique blockchain address as digital collectible",
-          image_url: "https://via.placeholder.com/300x300/6366f1/ffffff?text=ADDR",
+          image_url: "",
           collection: "Blockchain Address Collection",
           contract: "0xb590ba8f60b0b4b094610575cb4c8a2c60ef4f78",
           token_standard: "ERC721"
