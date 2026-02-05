@@ -1,41 +1,13 @@
 # AGENTS.md
 
-This file guides automated agents working on this repo.
-
-## Project overview
-- React + Vite frontend in `src/`
-- Express API in `server.js` (Gemini rewrite endpoint)
-- Static assets in `public/`
-- Deployment config in `app.yaml` and `Dockerfile`
-
-## Local setup
-1. Install dependencies:
-   - `npm install`
-2. Create `.env` in the repo root:
-   - `GEMINI_API_KEY=...` (required for server startup)
-   - `RECAPTCHA_SECRET_KEY=...` (required for reCAPTCHA verification)
-
-## Run and build
-- `npm run dev` (Vite + API server via concurrently)
-- `npm run server` (API only, port 3001 by default)
-- `npm run build` (Vite production build to `dist/`)
-- `npm run preview` (preview the production build)
-- `npm run lint` (ESLint)
-
-## Notes for changes
-- Keep edits small and focused; avoid unrelated refactors.
-- Follow existing JSX and CSS patterns in `src/`.
-- Do not commit secrets or `.env` files.
-- Update README if you change setup or commands.
-# AGENTS.md
-
 ## Project summary
 - React + Vite frontend with an Express backend.
 - Backend rewrites the "About Me" text via Google Gemini.
 - Production build output is served from `dist/` by `server.js`.
 
-## Key paths
-- `src/`: React components, CSS, and client utilities.
+## Key files and entry points
+- `src/App.jsx`: main UI component (frontend run file).
+- `src/main.jsx`: mounts `App` into the DOM.
 - `server.js`: Express API + static file server.
 - `public/`: static assets.
 - `app.yaml`, `Dockerfile`: deployment configuration.
@@ -65,5 +37,6 @@ This file guides automated agents working on this repo.
 
 ## Notes for changes
 - Keep frontend changes inside `src/` and styles in related `.css` files.
-- Do not commit `dist/` or other build artifacts.
+- Do not commit secrets, `.env`, or `dist/`.
 - `server.js` exits if `GEMINI_API_KEY` is missing.
+- Update README if you change setup or commands.
