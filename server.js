@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import fetch from 'node-fetch';
 
 dotenv.config();
@@ -21,8 +22,22 @@ if (!process.env.GEMINI_API_KEY) {
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the React build directory
-app.use(express.static(path.join(__dirname, 'dist')));
+const distDir = path.join(__dirname, 'dist');
+const distIndexPath = path.join(distDir, 'index.html');
+const hasDistBuild = fs.existsSync(distIndexPath);
+
+// Serve static files from the React build directory when available.
+if (hasDistBuild) {
+  app.use(express.static(distDir));
+} else {
+  app.get('/', (req, res) => {
+    res
+      .status(404)
+      .send(
+        'Frontend build not found. Run `npm run build` or use `npm run dev` and open http://localhost:5173.'
+      );
+  });
+}
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -67,10 +82,12 @@ app.post('/api/rewrite', async (req, res) => {
 });
 
 // The "catchall" handler: for any request that doesn't match one above,
-// send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+// send back React's index.html file when a build exists.
+if (hasDistBuild) {
+  app.get('*', (req, res) => {
+    res.sendFile(distIndexPath);
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
